@@ -1,16 +1,27 @@
 import { Component } from '@angular/core';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+
+interface Item {
+  name:string
+}
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css']
+  template: `
+    <div>
+      {{ (item | async)?.name }}
+    </div>
+  `
 })
 export class AppComponent {
-  title = 'Hello World';
-  items: Observable<any[]>;
-  constructor(db: AngularFirestore) {
-    this.items = db.collection('items').valueChanges();
+  itemDoc: AngularFirestoreDocument<Item>;
+  item: Observable<Item>;
+  constructor(private afs: AngularFirestore) {
+    this.itemDoc = afs.doc<Item>('items/uVBxzJMfc9qdm64rJFsC');
+    this.item = this.itemDoc.valueChanges();
+  }
+  update(item: Item) {
+    this.itemDoc.update(item);
   }
 }

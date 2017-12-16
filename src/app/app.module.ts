@@ -15,10 +15,11 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase, 'Angular Fire2'),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
     // AngularFireDatabaseModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
