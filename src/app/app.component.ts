@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/fires
 import { Observable } from 'rxjs/Observable';
 
 interface Item {
+  id:string,
   name:string
 }
 
@@ -11,22 +12,28 @@ interface Item {
   template: `
     <ul>
       <li *ngFor="let item of items | async">
-        <input type="text" [(ngModel)]="item.name">
-        <span (click)="addItem(item)">Add</span>
+        {{ item.name }}
       </li>
     </ul>
+    <div>
+      <input type="text" [(ngModel)]="name">
+      <span (click)="addItem(name)">Add</span>
+    </div>
   `
 })
 export class AppComponent {
   private itemsCollection: AngularFirestoreCollection<Item>;
   items: Observable<Item[]>;
+  name: string;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private readonly afs: AngularFirestore) {
     this.itemsCollection = afs.collection<Item>('items');
     this.items = this.itemsCollection.valueChanges();
   }
 
-  addItem(item: Item) {
+  addItem(name: string) {
+    const id = this.afs.createId();
+    const item: Item = { id, name }
     this.itemsCollection.add(item);
   }
 }
