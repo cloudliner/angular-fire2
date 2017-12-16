@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
 
@@ -11,7 +11,8 @@ interface Item {
   template: `
     <ul>
       <li *ngFor="let item of items | async">
-        {{ item.name }}
+        <input type="text" [(ngModel)]="item.name">
+        <span (click)="addItem(item)">Add</span>
       </li>
     </ul>
   `
@@ -25,7 +26,7 @@ export class AppComponent {
     this.items = this.itemsCollection.valueChanges();
   }
 
-  update(item: Item) {
+  addItem(item: Item) {
     this.itemsCollection.add(item);
   }
 }
