@@ -1,39 +1,39 @@
 import { Component, Input } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
-interface Item {
-  id:string,
-  name:string
+export interface Shirt {
+  name: string;
+  price: number;
+}
+
+export interface ShirtId extends Shirt {
+  id: string;
 }
 
 @Component({
   selector: 'app-root',
   template: `
     <ul>
-      <li *ngFor="let item of items | async">
-        {{ item.name }}
+      <li *ngFor="let shirt of shirts | async">
+        {{ shirt.name }} is {{ shirt.price }}
       </li>
     </ul>
-    <div>
-      <input type="text" [(ngModel)]="name">
-      <span (click)="addItem(name)">Add</span>
-    </div>
   `
 })
 export class AppComponent {
-  private itemsCollection: AngularFirestoreCollection<Item>;
-  items: Observable<Item[]>;
-  name: string;
+  private shirtCollection: AngularFirestoreCollection<Shirt>;
+  shirts: Observable<ShirtId[]>;
 
   constructor(private readonly afs: AngularFirestore) {
-    this.itemsCollection = afs.collection<Item>('items');
-    this.items = this.itemsCollection.valueChanges();
-  }
-
-  addItem(name: string) {
-    const id = this.afs.createId();
-    const item: Item = { id, name }
-    this.itemsCollection.add(item);
+    this.shirtCollection = afs.collection<Shirt>('shirts');
+    this.shirts = this.shirtCollection.snapshotChanges().map(actions => {
+      return actions.map(a => {
+        const data = a.payload.doc.data() as Shirt;
+        const id = a.payload.doc.id;
+        return { id, ...data };
+      });
+    });
   }
 }
