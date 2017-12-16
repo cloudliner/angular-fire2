@@ -11,9 +11,6 @@ import { AngularFireDatabaseModule } from 'angularfire2/database'
 import { environment } from '../environments/environment';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase, 'Angular Fire2'),
@@ -21,7 +18,7 @@ import { environment } from '../environments/environment';
     AngularFireAuthModule,
     AngularFireDatabaseModule
   ],
-  providers: [],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
