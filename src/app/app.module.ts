@@ -6,7 +6,7 @@ import { AngularFireModule } from 'angularfire2';
 // Optional Module
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { AngularFireDatabaseModule } from 'angularfire2/database'
+// import { AngularFireDatabaseModule } from 'angularfire2/database'
 
 import { environment } from '../environments/environment';
 
@@ -15,8 +15,8 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase, 'Angular Fire2'),
     AngularFirestoreModule,
-    AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireAuthModule
+    // AngularFireDatabaseModule
   ],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
