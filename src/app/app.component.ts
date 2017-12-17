@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/combineLatest';
+import * as firebase from 'firebase/app';
 
 export interface Item {
   text: string;
@@ -44,7 +45,7 @@ export interface Item {
   `
 })
 export class AppComponent {
-  items$: Observable<Item[]>;
+  items$: Observable<{}[]>;
   sizeFilter$: BehaviorSubject<string|null>;
   colorFilter$: BehaviorSubject<string|null>;
 
@@ -55,7 +56,7 @@ export class AppComponent {
       this.sizeFilter$,
       this.colorFilter$
     ).switchMap(([size, color]) =>
-      afs.collection('items', ref => {
+      afs.collection('queryItems', ref => {
         let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         if (size) { query = query.where('size', '==', size) };
         if (color) { query = query.where('color', '==', color) };
