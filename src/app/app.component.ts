@@ -17,7 +17,7 @@ export interface Item {
   <div *ngIf="items$ | async; let items; else loading">
     <ul>
       <li *ngFor="let item of items">
-        {{ items.text }}
+        {{ item.text }}
       </li>
     </ul>
     <div *ngIf="items.length === 0">No results, try clearing filters</div>
@@ -38,7 +38,7 @@ export interface Item {
     <button (click)="filterByColor('green')">Green</button>
     <button (click)="filterByColor('blue')">Blue</button>
     <button (click)="filterByColor(null)" *ngIf="this.colorFilter$.getValue()">
-      <em>clear color</em>
+      <em>clear filter</em>
     </button>
   </div>
   `
