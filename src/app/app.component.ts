@@ -45,7 +45,7 @@ export interface Item {
   `
 })
 export class AppComponent {
-  items$: Observable<{}[]>;
+  items$: Observable<Item[]>;
   sizeFilter$: BehaviorSubject<string|null>;
   colorFilter$: BehaviorSubject<string|null>;
 
@@ -56,7 +56,7 @@ export class AppComponent {
       this.sizeFilter$,
       this.colorFilter$
     ).switchMap(([size, color]) =>
-      afs.collection('queryItems', ref => {
+      afs.collection<Item>('queryItems', ref => {
         let query : firebase.firestore.CollectionReference | firebase.firestore.Query = ref;
         if (size) { query = query.where('size', '==', size) };
         if (color) { query = query.where('color', '==', color) };
